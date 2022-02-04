@@ -1,36 +1,39 @@
 
+import { Wordpress } from './pages'
+
+const word = new Wordpress()
 
 describe('wordpress validate functionality', () => {
 
-    beforeEach('Login functionality', () => {
+    beforeEach('Verify login functionality', () => {
 
-        cy.visit('https://test-setup.com/cypressarpit/wp-login.php')
-        cy.get('#user_login').type('arpit')
-        cy.get('#user_pass').type('shashank@137')
-        cy.get('#wp-submit').click()
+        word.visit()
+
+        word.login('arpit', 'shashank@137')
 
         //check the backend was properly reached
-        cy.get('.wrap h1').should('have.text', 'Dashboard')
+        word.backend()
 
     })
-    it('check the right destination is reached', () => {
-        cy.get('.wp-menu-name').eq(11).click()
-        cy.url().should('include','options-general')
-        cy.get('.wrap h1').should('have.text', 'General Settings')
-
-
+    it('Verify page navigating to the settings page', () => {
+        word.settings_page()
     })
 
-    it('test item should navigate in our plugin Advanced Ads', () => {
-        cy.get('.wp-menu-name').eq(7).click()
-        cy.get('.wp-heading-inline').should('be.visible')
+    it('Verify page navigating to the advanced ads page', () => {
+        word.advanced_ads_page()
     })
 
-    it('Advanced Ads ad list', () => {
-        cy.get('.wp-menu-name').eq(5).click()
-        cy.get('.wp-submenu.wp-submenu-wrap >li').eq(16).click()
-        cy.get('.colspanchange').should('be.visible')
-        cy.url().should('include','advanced_ads')
+    it('Verify advanced ads list is empty', () => {
+        word.advanced_ads_list()
     })
 
 })
+
+
+
+
+
+
+
+
+
